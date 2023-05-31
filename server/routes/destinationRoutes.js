@@ -1,14 +1,14 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const controller = require('../controllers/controllers.js'); // Import the controllers
 
 // Destination APIs
-router.get('/:username', controller.getDestinations);
+router.get('/destination/:name', controller.getDestinations);
 
-router.post('/:username', controller.addDestination);
+router.post('/destination/:name', controller.addDestination);
 
-router.put('/:username/:destinationId', controller.updateDestination);
+router.put('/destination/:name/:destinationId', controller.updateDestination);
 
-router.delete('/:username/:destinationId', controller.deleteDestination);
+router.delete('/destination/:name/:destinationId', controller.deleteDestination);
 
 module.exports = router;

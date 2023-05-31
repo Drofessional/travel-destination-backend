@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const controller = require('../controllers/controllers.js'); // Import the controllers
+const controller = require('../controllers/controllers.js');
 
 // User APIs
 router.post('/register', controller.registerUser);
