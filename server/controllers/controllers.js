@@ -1,5 +1,4 @@
-// controllers.js
-const User = require('./models/User');
+const User = require('../models/usermodel');
 const axios = require('axios');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -9,7 +8,7 @@ exports.registerUser = async (req, res) => {
   // hash the password before saving it
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = new User({
-    username: req.body.username,
+    username: req.body.username,  // Changed name to username
     email: req.body.email,
     password: hashedPassword,
     destinations: [],
@@ -76,3 +75,11 @@ exports.deleteDestination = async (req, res) => {
 
   res.json({ message: 'Destination deleted successfully' });
 };
+
+exports.getUser = async (req, res) => {
+  const user = await User.findOne({ name: req.params.name });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  res.json(user);
+};
+
+

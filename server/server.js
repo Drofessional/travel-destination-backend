@@ -5,10 +5,11 @@ const destinationRoutes = require('./routes/destinationRoutes');
 
 const app = express();
 app.use(express.json());
+require('dotenv').config();
 const port = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/travelApp', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected...'))
   .catch(err => console.log(err));
 
