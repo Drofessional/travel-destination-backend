@@ -5,7 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const Destination = require('../models/destinationmodel.js');
 const User = require('../models/usermodel.js');
-const mongoose = require('./connection');
+const mongoose = require('../db/connection.js');
+const bcrypt = require('bcryptjs');
 
 // Import the cities from the JSON file
 const { cities } = require('./cities.json');
@@ -54,65 +55,63 @@ async function clearDestinations() {
   }
 }
 
-// Loop over the cities and seed the database, with delay between each request
-cities.forEach(async (city, index) => {
-  const delay = index * 2000; // Delay of 2 seconds between each request
+// Clear the users collection
+async function clearUsers() {
   try {
-    const cityData = await getCityDetails(city, delay);
-    const attractions = await getAttractions(cityData.lat, cityData.lon, delay + 1000);
-    const destination = new Destination({
-      city: cityData.name,
-      country: cityData.country,
-      lon: cityData.lon,
-      lat: cityData.lat,
-      attractions: attractions
-    });
-
-    destination
-      .save()
-      .then(() => console.log(`Added ${cityData.name} to the database.`))
-      .catch(err => console.error(`Error: ${err}`));
+    await User.deleteMany({});
+    console.log('Cleared users collection.');
   } catch (error) {
-    console.error(`Failed to fetch data for city: ${city}`);
+    console.error('Error clearing users collection:', error);
   }
-});
+}
 
-// After seeding destinations, create a sample user
-User.findOne({ email: 'mikefesss@gmail.com' })
-  .then(user => {
-    if (!user) {
-      const user = new User({
-        name: 'mike',
-        email: 'mikefesss@gmail.com',
-        password: 'test',
-        destinations: []
+
+// Start of seeding process
+async function startSeeding() {
+  await clearDestinations(); // Clear destinations collection
+  await clearUsers();
+
+  const userDestinations = [];
+
+  const cityPromises = cities.map(async (city, index) => {
+    const delay = index * 2000; // Delay of 2 seconds between each request
+    try {
+      const cityData = await getCityDetails(city, delay);
+      const attractions = await getAttractions(cityData.lat, cityData.lon, delay + 1000);
+      const destination = new Destination({
+        city: cityData.name,
+        country: cityData.country,
+        lon: cityData.lon,
+        lat: cityData.lat,
+        attractions: attractions
       });
 
-      user
-        .save()
-        .then(() => console.log(`Added user ${user.name} to the database.`))
-        .catch(err => console.error(`Error: ${err}`));
-    } else {
-      console.log(`User ${user.name} already exists in the database.`);
+      const savedDestination = await destination.save();
+      userDestinations.push(savedDestination._id);
+
+      console.log(`Added ${cityData.name} to the database.`);
+    } catch (error) {
+      console.error(`Failed to fetch data for city: ${city}`);
     }
-  })
-  .catch(err => console.error(`Error: ${err}`));
+  });
 
-// Wait for some time to ensure all data has been written to the database
-setTimeout(async () => {
-  await clearDestinations(); // Clear destinations collection
+  // Wait for all cities to be processed
+  await Promise.all(cityPromises);
 
-  // Fetch all destinations from the database
-  const destinations = await Destination.find({});
-  // Write the destinations data to a JSON file
-  const destinationsFilePath = path.join(__dirname, '..', 'data', 'destinations.json');
-  fs.writeFileSync(destinationsFilePath, JSON.stringify(destinations, null, 2));
+  const hashedPassword = await bcrypt.hash('test', 10);
+  const user = new User({
+    name: 'mike',
+    email: 'mikefesss@gmail.com',
+    password: hashedPassword,
+    destinations: userDestinations
+  });
 
-  // Fetch all users from the database
-  const users = await User.find({});
-  // Write the users data to a JSON file
-  const usersFilePath = path.join(__dirname, '..', 'data', 'users.json');
-  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+  try {
+    await user.save();
+    console.log(`Added user ${user.name} to the database with destinations.`);
+  } catch (err) {
+    console.error(`Error: ${err}`);
+  }
+}
 
-  console.log('Wrote data to JSON files.');
-}, 30000);
+startSeeding();
