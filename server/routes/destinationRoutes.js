@@ -3,12 +3,12 @@ const router = express.Router();
 const controller = require('../controllers/controllers.js'); // Import the controllers
 
 // Destination APIs
-router.get('/destination/:name', controller.getDestinations);
+router.get('/:name', controller.getDestinations); //working
 
-router.post('/destination/:name', controller.addDestination);
+router.post('/:name', controller.addDestination); //working
 
-router.put('/destination/:name/:destinationId', controller.updateDestination);
+router.put('/:name/:destinationId', controller.updateDestination); //working but not using?
 
-router.delete('/destination/:name/:destinationId', controller.deleteDestination);
+router.delete('/:name/:destinationId', controller.deleteDestination); //working
 
 module.exports = router;

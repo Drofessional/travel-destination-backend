@@ -65,13 +65,25 @@ async function clearUsers() {
   }
 }
 
+// Function to write data to JSON file
+function writeToJsonFile(filename, data) {
+  fs.writeFile(filename, JSON.stringify(data, null, 2), err => {
+    if (err) {
+      console.error(`Error writing data to ${filename}:`, err);
+    } else {
+      console.log(`Successfully wrote data to ${filename}.`);
+    }
+  });
+}
 
 // Start of seeding process
 async function startSeeding() {
   await clearDestinations(); // Clear destinations collection
-  await clearUsers();
+  await clearUsers(); // Clear users collection
 
   const userDestinations = [];
+  const destinationData = []; // Array to hold destination data
+  const userData = []; // Array to hold user data
 
   const cityPromises = cities.map(async (city, index) => {
     const delay = index * 2000; // Delay of 2 seconds between each request
@@ -87,6 +99,7 @@ async function startSeeding() {
       });
 
       const savedDestination = await destination.save();
+      destinationData.push(savedDestination); // Add destination data to array
       userDestinations.push(savedDestination._id);
 
       console.log(`Added ${cityData.name} to the database.`);
@@ -107,11 +120,18 @@ async function startSeeding() {
   });
 
   try {
-    await user.save();
+    const savedUser = await user.save();
+    userData.push(savedUser); // Add user data to array
     console.log(`Added user ${user.name} to the database with destinations.`);
   } catch (err) {
     console.error(`Error: ${err}`);
   }
+
+  // Write destination data to destinations.json
+  writeToJsonFile(path.join(__dirname, '..', 'data', 'destinations.json'), destinationData);
+
+  // Write user data to users.json
+  writeToJsonFile(path.join(__dirname, '..', 'data', 'users.json'), userData);
 }
 
 startSeeding();

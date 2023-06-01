@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/users', userRoutes);
-app.use('/api/destinations', destinationRoutes);
+app.use('/users', userRoutes);
+app.use('/destinations', destinationRoutes);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

@@ -3,11 +3,10 @@ var router = express.Router();
 const controller = require('../controllers/controllers.js');
 
 // User APIs
-router.post('/register', controller.registerUser);
+router.post('/register', controller.registerUser); //working
 
-//Does this make sense?
-// router.post('/login', controller.loginUser);
+router.put('/:name/updatePassword', controller.updatePassword); //working
 
-router.get('/:name', controller.getUser);
+router.get('/:name', controller.getUser); //working
 
 module.exports = router;

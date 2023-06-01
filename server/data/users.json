@@ -1,10 +1,21 @@
 [
   {
-    "_id": "6477614553e3f9090b4023c0",
     "name": "mike",
     "email": "mikefesss@gmail.com",
-    "password": "test",
-    "destinations": [],
+    "password": "$2a$10$BkcQB7ZW8rDOclqg6OlOj.0E/T8OYiZDjUc7NwaT6mKssjp8Fk6rm",
+    "destinations": [
+      "6478ac157494fa5bf871a03a",
+      "6478ac1a7494fa5bf871a03c",
+      "6478ac1c7494fa5bf871a03e",
+      "6478ac207494fa5bf871a040",
+      "6478ac247494fa5bf871a042",
+      "6478ac297494fa5bf871a044",
+      "6478ac2d7494fa5bf871a046",
+      "6478ac317494fa5bf871a048",
+      "6478ac347494fa5bf871a04a",
+      "6478ac387494fa5bf871a04c"
+    ],
+    "_id": "6478ac387494fa5bf871a04e",
     "__v": 0
   }
 ]
