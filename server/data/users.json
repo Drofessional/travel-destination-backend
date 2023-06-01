@@ -2,20 +2,20 @@
   {
     "name": "mike",
     "email": "mikefesss@gmail.com",
-    "password": "$2a$10$imYR4MT.qEr439uAxj8wmu2VpqhyGOl5uz0K1O64b7KcKcOw6Em/e",
+    "password": "$2a$10$PkDEPVQgyn8MtnW8iM.glu4Nw04OTolA/x5w1d18RfyyoXxkK2mdO",
     "destinations": [
-      "6478f06432bd84e9172cbbd8",
-      "6478f06932bd84e9172cbbda",
-      "6478f06c32bd84e9172cbbdc",
-      "6478f06f32bd84e9172cbbde",
-      "6478f07332bd84e9172cbbe0",
-      "6478f07732bd84e9172cbbe2",
-      "6478f07b32bd84e9172cbbe4",
-      "6478f08032bd84e9172cbbe6",
-      "6478f08332bd84e9172cbbe8",
-      "6478f08732bd84e9172cbbea"
+      "647912adc43ae58e9eb1a5bb",
+      "647912b1c43ae58e9eb1a5bd",
+      "647912b4c43ae58e9eb1a5bf",
+      "647912b8c43ae58e9eb1a5c1",
+      "647912bbc43ae58e9eb1a5c3",
+      "647912c0c43ae58e9eb1a5c5",
+      "647912c4c43ae58e9eb1a5c7",
+      "647912c8c43ae58e9eb1a5c9",
+      "647912cbc43ae58e9eb1a5cb",
+      "647912d0c43ae58e9eb1a5cd"
     ],
-    "_id": "6478f08832bd84e9172cbbec",
+    "_id": "647912d0c43ae58e9eb1a5cf",
     "__v": 0
   }
 ]

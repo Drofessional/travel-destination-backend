@@ -104,3 +104,40 @@ exports.updatePassword = async (req, res) => {
 
   res.status(200).json({ message: 'Password updated successfully' });
 };
+
+exports.updateName = async (req, res) => {
+  const { name } = req.params;
+  const { newName } = req.body;
+
+  const user = await User.findOne({ name });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  user.name = newName;
+  await user.save();
+
+  res.status(200).json({ message: 'Name updated successfully' });
+};
+
+exports.updateEmail = async (req, res) => {
+  const { name } = req.params;
+  const { newEmail } = req.body;
+
+  const user = await User.findOne({ name });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  user.email = newEmail;
+  await user.save();
+
+  res.status(200).json({ message: 'Email updated successfully' });
+};
+
+exports.checkPassword = async (req, res) => {
+  const { name } = req.params;
+  const { password } = req.body;
+
+  const user = await User.findOne({ name });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  const validPassword = await bcrypt.compare(password, user.password);
+  res.json({ validPassword });
+};
