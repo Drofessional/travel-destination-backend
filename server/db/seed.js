@@ -1,11 +1,10 @@
-// seed.js
 require('dotenv').config();
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const Destination = require('../models/destinationmodel.js');
 const User = require('../models/usermodel.js');
-const mongoose = require('../db/connection.js');
+const mongoose = require('../db/connection.js'); // Get the mongoose instance from connection.js
 const bcrypt = require('bcryptjs');
 
 // Import the cities from the JSON file
