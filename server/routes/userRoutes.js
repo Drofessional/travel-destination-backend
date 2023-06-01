@@ -5,7 +5,8 @@ const controller = require('../controllers/controllers.js');
 // User APIs
 router.post('/register', controller.registerUser);
 
-router.post('/login', controller.loginUser);
+//Does this make sense?
+// router.post('/login', controller.loginUser);
 
 router.get('/:name', controller.getUser);
 

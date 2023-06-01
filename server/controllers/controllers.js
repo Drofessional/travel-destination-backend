@@ -8,7 +8,7 @@ exports.registerUser = async (req, res) => {
   // hash the password before saving it
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = new User({
-    name: req.body.name,  // Changed name to username
+    name: req.body.name,  // Changed name to name
     email: req.body.email,
     password: hashedPassword,
     destinations: [],
@@ -23,8 +23,8 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  // find the user by username
-  const user = await User.findOne({ username: req.body.username });
+  // find the user by name
+  const user = await User.findOne({ name: req.body.name });
   if (!user) return res.status(400).json({ message: 'User not found' });
 
   // check if the password is correct
@@ -37,14 +37,14 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.getDestinations = async (req, res) => {
-  const user = await User.findOne({ username: req.params.username });
+  const user = await User.findOne({ name: req.params.name });
   if (!user) return res.status(404).json({ message: 'User not found' });
 
   res.json(user.destinations);
 };
 
 exports.addDestination = async (req, res) => {
-  const user = await User.findOne({ username: req.params.username });
+  const user = await User.findOne({ name: req.params.name });
   if (!user) return res.status(404).json({ message: 'User not found' });
 
   user.destinations.push(req.body);
@@ -54,7 +54,7 @@ exports.addDestination = async (req, res) => {
 };
 
 exports.updateDestination = async (req, res) => {
-  const user = await User.findOne({ username: req.params.username });
+  const user = await User.findOne({ name: req.params.name });
   if (!user) return res.status(404).json({ message: 'User not found' });
 
   const destination = user.destinations.id(req.params.destinationId);
@@ -67,7 +67,7 @@ exports.updateDestination = async (req, res) => {
 };
 
 exports.deleteDestination = async (req, res) => {
-  const user = await User.findOne({ username: req.params.username });
+  const user = await User.findOne({ name: req.params.name });
   if (!user) return res.status(404).json({ message: 'User not found' });
 
   user.destinations.pull({ _id: req.params.destinationId });
