@@ -1,9 +1,11 @@
+require('dotenv').config();
 const User = require('../models/usermodel');
 const axios = require('axios');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const Destination = require('../models/destinationmodel');
+
 
 exports.registerUser = async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -19,7 +21,7 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  const user = await User.findOne({ name: req.body.name });
+  const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).json({ message: 'User not found' });
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
