@@ -11,5 +11,6 @@ router.get('/:name', controller.getUser);
 router.put('/:name/updateName', controller.updateName);
 router.put('/:name/updateEmail', controller.updateEmail);
 router.post('/:name/checkPassword', controller.checkPassword);
-
+router.post('/addDestination', controller.addDestination); // Add this
+router.delete('/deleteDestination/:destinationId', controller.deleteDestination); // Add this
 module.exports = router;

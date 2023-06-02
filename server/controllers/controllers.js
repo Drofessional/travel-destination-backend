@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const Destination = require('../models/destinationmodel');
 
-
 exports.registerUser = async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = new User({
@@ -27,7 +26,7 @@ exports.loginUser = async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).json({ message: 'Invalid password' });
 
-  const token = jwt.sign({ _id: user._id }, JWT_SECRET);
+  const token = jwt.sign({ _id: user._id, email: user.email, name: user.name }, JWT_SECRET);
   res.json({ token });
 };
 

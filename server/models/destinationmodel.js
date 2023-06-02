@@ -8,15 +8,15 @@ const DestinationSchema = new Schema({
   },
   country: {
     type: String,
-    required: true
+    required: false
   },
   lon: {
     type: Number,
-    required: true
+    required: false
   },
   lat: {
     type: Number,
-    required: true
+    required: false
   },
   attractions: [{
     type: String
