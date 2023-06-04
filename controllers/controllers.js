@@ -1,7 +1,7 @@
 require('dotenv').config();
 const User = require('../models/usermodel');
 const axios = require('axios');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const Destination = require('../models/destinationmodel');
