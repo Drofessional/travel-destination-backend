@@ -75,14 +75,30 @@ exports.updateDestination = async (req, res) => {
 };
 
 exports.deleteDestination = async (req, res) => {
-  const user = await User.findOne({ name: req.params.name });
-  if (!user) return res.status(404).json({ message: 'User not found' });
+  try {
+    // Fetch the user
+    const user = await User.findById(req.userId);
 
-  user.destinations.pull({ _id: req.params.destinationId });
-  await user.save();
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
 
-  res.json({ message: 'Destination deleted successfully' });
+    // Fetch the destination ID from request parameters
+    const destinationId = req.params.destinationId;
+
+    // Remove the destination from the user's destinations array
+    user.destinations.pull({ _id: destinationId });
+
+    // Save the updated user document
+    await user.save();
+
+    res.json({ message: "Destination deleted successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error." });
+  }
 };
+
 
 exports.getUser = async (req, res) => {
   const user = await User.findOne({ name: req.params.name });
@@ -140,4 +156,20 @@ exports.checkPassword = async (req, res) => {
 
   const validPassword = await bcrypt.compare(password, user.password);
   res.json({ validPassword });
+};
+
+exports.getDestinationDetails = async (req, res) => {
+  const destination = await Destination.findById(req.params.destinationId);
+  if (!destination) return res.status(404).json({ message: 'Destination not found' });
+
+  // Create a response object containing only the required fields
+  const response = {
+    city: destination.city,
+    country: destination.country,
+    latitude: destination.latitude,
+    longitude: destination.longitude,
+    attractions: destination.attractions,
+  };
+
+  res.json(response);
 };

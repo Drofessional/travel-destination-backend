@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const userRoutes = require('./routes/userRoutes');
-const destinationRoutes = require('./routes/destinationRoutes');
-const mongoose = require('./db/connection'); 
+const userRoutes = require('./server/routes/userRoutes');
+const destinationRoutes = require('./server/routes/destinationRoutes');
+const mongoose = require('./server/db/connection'); 
 
 const app = express();
 app.use(cors());

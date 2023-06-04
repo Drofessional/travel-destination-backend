@@ -9,6 +9,6 @@ router.post('/:name', controller.addDestination); //working
 
 router.put('/:name/:destinationId', controller.updateDestination); //working but not using?
 
-router.delete('/:name/:destinationId', controller.deleteDestination); //working
-
+router.delete('/:destinationId', controller.deleteDestination);
+router.get('/id/:destinationId', controller.getDestinationDetails);
 module.exports = router;
