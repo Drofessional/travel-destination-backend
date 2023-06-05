@@ -36,6 +36,24 @@ exports.getDestinations = async (req, res) => {
 
   res.json(user.destinations);
 };
+
+
+exports.updateDestination = async (req, res) => {
+  const user = await User.findOne({ name: req.params.name });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+
+  if (!user.destinations.includes(req.params.destinationId)) {
+    return res.status(404).json({ message: 'Destination not found in user\'s list' });
+  }
+
+  const destination = await Destination.findById(req.params.destinationId);
+  if (!destination) return res.status(404).json({ message: 'Destination not found' });
+
+  Object.assign(destination, req.body);
+  await destination.save();
+
+  res.json(destination);
+};
 exports.addDestination = async (req, res) => {
   const user = await User.findOne({ name: req.params.name });
   if (!user) {
@@ -56,42 +74,21 @@ exports.addDestination = async (req, res) => {
 
   res.json(user.destinations);
 };
-
-exports.updateDestination = async (req, res) => {
-  const user = await User.findOne({ name: req.params.name });
-  if (!user) return res.status(404).json({ message: 'User not found' });
-
-  if (!user.destinations.includes(req.params.destinationId)) {
-    return res.status(404).json({ message: 'Destination not found in user\'s list' });
-  }
-
-  const destination = await Destination.findById(req.params.destinationId);
-  if (!destination) return res.status(404).json({ message: 'Destination not found' });
-
-  Object.assign(destination, req.body);
-  await destination.save();
-
-  res.json(destination);
-};
-
 exports.deleteDestination = async (req, res) => {
   try {
     // Fetch the user
-    const user = await User.findById(req.userId);
-
+    const user = await User.findOne({ name: req.params.name });
+    console.log(user)
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
-
     // Fetch the destination ID from request parameters
     const destinationId = req.params.destinationId;
-
+    console.log (destinationId)
     // Remove the destination from the user's destinations array
     user.destinations.pull({ _id: destinationId });
-
     // Save the updated user document
     await user.save();
-
     res.json({ message: "Destination deleted successfully." });
   } catch (error) {
     console.error(error);
